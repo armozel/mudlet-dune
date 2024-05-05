@@ -191,7 +191,7 @@ local function setupTopRight()
     width = "100%",
     height = "50%",
     tabBarHeight ="10%",
-    tabs = {"Stats", "Cooldowns"},
+    tabs = {"Stats", "Skills"},
   }, GUI.right)
 end
 
@@ -223,21 +223,51 @@ local function setupStats()
     fontSize = 14,
   }, GUI.statsBox)
   
-  local testMaker = TableMaker:new({
+  local statsTable = TableMaker:new({
     title = "Stats",
     printTitle = "true",
     titleColor = "<red>",
     printHeaders = false,
   })
 
-  testMaker:addColumn({ name = "Stats" , width = 19, textColor = "<orange>"})
-  testMaker:addColumn({name = "", width = 19, textColor = "<green>"})
+  statsTable:addColumn({ name = "Stats" , width = 29, textColor = "<orange>"})
+  statsTable:addColumn({name = "", width = 10, textColor = "<green>"})
   for k, v in pairs(statTypes) do
-    testMaker:addRow({ v, "1"})
+    statsTable:addRow({ v, "1"})
   end
 
   GUI.statsConsole:clear()
-  GUI.statsConsole:cecho(testMaker:assemble())
+  GUI.statsConsole:cecho(statsTable:assemble())
+end
+
+local function setupSkills()
+  local GUI = DuneMUD.ui.GUI
+  GUI.skillsBox = GUI.skillsBox or Geyser.VBox:new({
+    name = "skillsBox",
+    x = 15,
+    y = 15,
+    height = -15,
+    width = -15,
+  }, GUI.topRight.Skillscenter)
+
+  GUI.skillsConsole = GUI.skillsConsole or Geyser.MiniConsole:new({
+    name = "skillsConsole",
+    color = "black",
+    scrollBar = true,
+    fontSize = 14
+  }, GUI.skillsBox)
+
+  local skillsTable = TableMaker:new({
+    title = "Skills",
+    printTitle = true,
+    printHeaders = false,
+
+  })
+  skillsTable:addColumn({ name = "Skills" , width = 27, textColor = "<orange>"})
+  skillsTable:addColumn({name = "", width = 10, textColor = "<green>"})
+  skillsTable:addRow({"None", "0"})
+  GUI.skillsConsole:clear()
+  GUI.skillsConsole:cecho(skillsTable:assemble())
 end
 
 function DuneMUD.ui.setup()
@@ -248,6 +278,7 @@ function DuneMUD.ui.setup()
   setupVitals()
   setupTopRight()
   setupStats()
+  setupSkills()
   setupMap()
 
   DuneMUD.ui.show()
@@ -283,7 +314,27 @@ function DuneMUD.ui.hide()
   GUI.top:hide()
 end
 
+function DuneMUD.ui.onGuildUpdate(_, guildInfo)
+end
+
 function DuneMUD.ui.onSkillsUpdate(_, charSkills)
+  local GUI = DuneMUD.ui.GUI
+  local skillsTable = TableMaker:new({
+    title = "Skills",
+    printTitle = true,
+    printHeaders = false,
+
+  })
+  skillsTable:addColumn({ name = "Skills" , width = 27, textColor = "<orange>"})
+  skillsTable:addColumn({name = "", width = 10, textColor = "<green>"})
+  
+  for k, v in pairs(charSkills) do
+    local skillName = tostring(k)
+    skillsTable:addRow({skillName, tostring(v)})
+  end
+
+  GUI.skillsConsole:clear()
+  GUI.skillsConsole:cecho(skillsTable:assemble())
 end
 
 function DuneMUD.ui.onStatusUpdate(_, charStatus)
@@ -292,21 +343,21 @@ end
 function DuneMUD.ui.onStatsUpdate(_, charStats)
   local GUI = DuneMUD.ui.GUI
 
-  local testMaker = TableMaker:new({
+  local statsTable = TableMaker:new({
     title = "Stats",
     printTitle = "true",
     titleColor = "<red>",
     printHeaders = false,
   })
 
-  testMaker:addColumn({ name = "Stats" , width = 19, textColor = "<orange>"})
-  testMaker:addColumn({name = "", width = 19, textColor = "<green>"})
+  statsTable:addColumn({ name = "Stats" , width = 29, textColor = "<orange>"})
+  statsTable:addColumn({name = "", width = 10, textColor = "<green>"})
   for k, v in pairs(charStats) do
     local statType = statTypes[k]
-    testMaker:addRow({ statType, tostring(v)})
+    statsTable:addRow({ statType, tostring(v)})
   end
   GUI.statsConsole:clear()
-  GUI.statsConsole:cecho(testMaker:assemble())
+  GUI.statsConsole:cecho(statsTable:assemble())
 end
 
 function DuneMUD.ui.onChannelList(_, channelList)

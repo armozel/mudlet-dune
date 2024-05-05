@@ -48,12 +48,12 @@ function DuneMUD.character.guildUpdate(_, charGuild)
     return
   end
   DuneMUD.character.Guild = charGuild
-  -- raiseEvent("DuneMUD.character.guildUpdated", DuneMUD.character.Guild)
+  raiseEvent("DuneMUD.character.guildUpdated", DuneMUD.character.Guild)
 end
 function DuneMUD.character.skillsUpdate(_, charSkills)
   if charSkills == nil then
     return
   end
   DuneMUD.character.Skills = charSkills
-  -- raiseEvent("DuneMud.character.skillsUpdated", DuneMUD.character.Skills)
+  raiseEvent("DuneMud.character.skillsUpdated", DuneMUD.character.Skills)
 end

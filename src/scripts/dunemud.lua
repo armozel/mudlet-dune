@@ -49,6 +49,8 @@ DuneMUD.eventHandlers = {
   { "DuneMUDChannelText", "DuneMUD.ui.onChannelText", nil },
   { "DuneMUD.character.statusUpdated", "DuneMUD.ui.onStatusUpdate", nil },
   { "DuneMUD.character.statsUpdated", "DuneMUD.ui.onStatsUpdate", nil },
+  { "DuneMUD.character.guildUpdated", "DuneMUD.ui.onGuildUpdate", nil },
+  { "DuneMud.character.skillsUpdated", "DuneMUD.ui.onSkillsUpdate", nil },
 
   -- Mapper handlers. These are defined in mapper.lua and should
   -- only be reacting to DuneMUDXXX events.
