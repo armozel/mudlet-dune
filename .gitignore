@@ -3,3 +3,4 @@ build/
 notes.txt
 build.sh
 muddler-cmd.ps1
+run-muddler.sh
